@@ -6,6 +6,7 @@ import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,5 +111,8 @@ public class LetterRecognition {
             logger.log(Level.INFO, "Speech Recognition is not running.");
         }
     }
-
+    private boolean confirmInput(String letter) {
+        int option = JOptionPane.showConfirmDialog(null, "Input '" + letter + "'?", "Confirm Input", JOptionPane.YES_NO_OPTION);
+        return option == JOptionPane.YES_OPTION;
+    }
 }
