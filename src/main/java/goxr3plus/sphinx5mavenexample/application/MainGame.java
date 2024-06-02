@@ -124,10 +124,18 @@ public class MainGame extends JFrame implements ActionListener, LetterRecognitio
     }
     @Override
     public void onLetterRecognized(String recognizedLetter) {
-        // Check if the recognized letter is not <unk>
         if (!recognizedLetter.equals("<unk>")) {
-            // Append recognized letter to input field
-            inputField.setText(inputField.getText() + recognizedLetter);
+            // Ask the user to confirm the input
+            int option = JOptionPane.showConfirmDialog(this, "Input '" + recognizedLetter + "'?", "Confirm Input", JOptionPane.YES_NO_OPTION);
+
+            // Check the user's choice
+            if (option == JOptionPane.YES_OPTION) {
+                // Append recognized letter to input field
+                inputField.setText(inputField.getText() + recognizedLetter);
+            } else {
+                // User chose not to input the letter
+                // You can handle this case as needed, such as ignoring the input or displaying a message
+            }
         }
     }
 
