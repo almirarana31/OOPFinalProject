@@ -1,87 +1,80 @@
 @startuml
-class MainGame {
-  - TextToSpeech tts
-  - LetterRecognition letterRecognition
-  - JLabel wordLabel
-  - JTextField inputField
-  - JButton startButton
-  - JButton answerButton
-  - JButton replayButton
-  - String currentWord
-  - List<String> wordList
+package main.java.goxr3plus.sphinx5mavenexample.application {
+    class MainGame {
+        - TextToSpeech tts
+        - LetterRecognition letterRecognition
+        - JLabel wordLabel
+        - JTextField inputField
+        - JButton startButton
+        - JButton answerButton
+        - JButton replayButton
+        - String currentWord
+        - List<String> wordList
+        + MainGame()
+        + void actionPerformed(ActionEvent e)
+        - void startGame()
+        + void onLetterRecognized(String recognizedLetter)
+        + class MessageScreen
+    }
+    class SpellingBeeUI {
+    - JButton startButton
+    - JLabel titleLabel
+    - JLabel subtitleLabel
+    - TextToSpeech tts
+    + SpellingBeeUI()
+    - void StartGame()
+    + void main(String[] args)
+    }
+    class TextToSpeech {
+    - AudioPlayer tts
+    - MaryInterface marytts
+    + TextToSpeech()
+    + void speak(String text, float gainValue, boolean daemon, boolean join)
+    + void stopSpeaking()
+    + Collection<Voice> getAvailableVoices()
+    + MaryInterface getMarytts()
+    + List<AudioEffect> getAudioEffects
+    + void setVoice(String voice)
+    }
+    class AudioPlayer {
+    - AudioInputStream ais
+    - LineListener lineListener
+    - SourceDataLine line
+    - int outputMode
+    - Status status
+    - boolean exitRequested
+    - float gain
+    + enum Status
+    + void setAudio(AudioInputStream audio)
+    + void cancel()
+    + SourceDataLine getLine()
+    + float getGainValue()
+    + void setGain
+    + void run()
+    }
+    class LetterRecognition {
+    - LetterRecognitionCallback callback
+    - LiveSpeechRecognizer recognizer
+    - Logger logger
+    - boolean ignoreSpeechRecognitionResults
+    - speechRecognizerThreadRunning
+    - ExecutorService eventsExecutorService
+    - List<String> recognizedLetters
+    + LetterRecognition()
+    + void setLetterRecognitionCallback
+    + synchronized void startSpeechRecognition(int delayMilliseconds)
+    + synchronized void stopSpeechRecognition()
+    + void ignoreSpeechRecognitionResults()
+    + synchronized void stopRecognition()
+    - boolean confirmInput(String letter)
+    }
+    interface LetterRecognitionCallback
 
-  + MainGame()
-  + actionPerformed(ActionEvent e)
-  + startGame()
-  + onLetterRecognized(String recognizedLetter)
-}
 
-class SpellingBeeUI {
-  - TextToSpeech tts
-  - JButton startButton
-  - JLabel titleLabel
-  - JLabel subtitleLabel
-
-  + SpellingBeeUI()
-  + startGame()
-}
-
-class TextToSpeech {
-  - MaryInterface marytts
-  - AudioPlayer tts
-
-  + TextToSpeech()
-  + speak(String text, float gainValue, boolean daemon, boolean join)
-  + stopSpeaking()
-  + getAvailableVoices()
-  + getMarytts()
-  + getAudioEffects()
-  + setVoice(String voice)
-}
-
-class AudioPlayer {
-  - AudioInputStream ais
-  - LineListener lineListener
-  - SourceDataLine line
-  - int outputMode
-  - Status status
-  - boolean exitRequested
-  - float gain
-
-  + AudioPlayer()
-  + setAudio(AudioInputStream audio)
-  + cancel()
-  + getLine()
-  + getGainValue()
-  + setGain(float fGain)
-  + run()
-}
-
-class LetterRecognition {
-  - LetterRecognitionCallback callback
-  - LiveSpeechRecognizer recognizer
-  - Logger logger
-  - boolean ignoreSpeechRecognitionResults
-  - boolean speechRecognizerThreadRunning
-  - ExecutorService eventsExecutorService
-  - List<String> recognizedLetters
-
-  + LetterRecognition()
-  + setLetterRecognitionCallback(LetterRecognitionCallback callback)
-  + startSpeechRecognition(int delayMilliseconds)
-  + stopSpeechRecognition()
-  + ignoreSpeechRecognitionResults()
-  + stopIgnoreSpeechRecognitionResults()
-  + stopRecognition()
-  + confirmInput(String letter)
-}
-JFrame --> MainGame
-MainGame --> TextToSpeech
-MainGame --> LetterRecognition
-SpellingBeeUI --> TextToSpeech
-TextToSpeech --> MaryInterface
-TextToSpeech --> AudioPlayer
-AudioPlayer --> SourceDataLine
-LetterRecognition --> LiveSpeechRecognizer
-LetterRecognition --> ExecutorService
+MainGame --|> JFrame
+MainGame ..|> ActionListener
+MainGame ..|> LetterRecognitionCallback
+MessageScreen --|> JFrame
+SpellingBeeUI --|> JFrame
+AudioPlayer --|> Thread
 @enduml
